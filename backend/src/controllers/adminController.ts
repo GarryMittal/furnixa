@@ -5,11 +5,10 @@ import { isAdmin } from "../lib/roles.js";
 import ImageKit from "@imagekit/nodejs";
 import { getEnv } from "../lib/env.js";
 import { db } from "../db/index.js";
-import { orderItems, products,productImages } from "../db/schema.js";
+import { orderItems, products, productImages } from "../db/schema.js";
 import { count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { deleteImageKitAsset } from "../lib/imagekit.js";
-
 
 const env = getEnv();
 const imageSchema = z.object({
@@ -25,7 +24,7 @@ const productCreate = z.object({
   priceCents: z.number().int().positive(),
   currency: z.string().min(1).default("usd"),
   active: z.boolean().default(true),
-
+ 
   images: z.array(imageSchema).min(1),
 });
 
@@ -37,6 +36,7 @@ const productPatch = z.object({
   priceCents: z.number().int().positive().optional(),
   currency: z.string().min(1).optional(),
   active: z.boolean().optional(),
+ 
 });
 
 function buildProductUpdateSet(body: z.infer<typeof productPatch>) {
@@ -47,7 +47,7 @@ function buildProductUpdateSet(body: z.infer<typeof productPatch>) {
   if (body.description !== undefined) data.description = body.description;
   if (body.priceCents !== undefined) data.priceCents = body.priceCents;
   if (body.currency !== undefined) data.currency = body.currency;
-  
+
   if (body.active !== undefined) data.active = body.active;
   return data;
 }
@@ -124,8 +124,6 @@ export async function listAdminProducts(
       orderBy: (products, { desc }) => [desc(products.createdAt)],
     });
 
-        
-
     res.json({
       products: rows,
     });
@@ -133,7 +131,6 @@ export async function listAdminProducts(
     next(e);
   }
 }
-
 
 export async function createAdminProduct(
   req: Request,
@@ -160,6 +157,7 @@ export async function createAdminProduct(
           description: parsed.data.description,
           priceCents: parsed.data.priceCents,
           currency: parsed.data.currency,
+   
           active: parsed.data.active,
         })
         .returning();
@@ -176,7 +174,7 @@ export async function createAdminProduct(
       return createdProduct;
     });
 
-    res.status(201).json({ product});
+    res.status(201).json({ product });
   } catch (e) {
     next(e);
   }
@@ -258,7 +256,6 @@ export async function updateAdminProduct(
 //     next(e);
 //   }
 // }
-
 
 export async function deleteAdminProduct(
   req: Request,
