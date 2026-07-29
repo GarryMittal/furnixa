@@ -31,7 +31,8 @@ const DEV_FALLBACK_CATEGORIES = [
   "Living Room",
   "Kitchen",
   "Dining Room",
-  "Study Room",
+  "Study",
+  "Bathroom",
 ];
 
 export function CategoryGrid({ categories = [], loading = false }) {
@@ -71,7 +72,8 @@ export function CategoryGrid({ categories = [], loading = false }) {
                   src={categoryImage(category)}
                   alt=""
                   aria-hidden="true"
-                  loading="lazy"
+                  loading="eager"
+                  fetchPriority="high"
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   onError={(e) => e.currentTarget.remove()}

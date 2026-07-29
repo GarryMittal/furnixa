@@ -7,10 +7,13 @@ export function HomeHero() {
         <img
           src="/herobg.jpg"
           alt=""
+          loading="eager" 
+          fetchPriority="high" 
+          decoding="async"
           aria-hidden="true"
           className="h-full w-full scale-105 object-cover blur-[2px]"
         />
-        
+
         <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/75 via-neutral-950/35 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/40 via-transparent to-transparent" />
       </div>
@@ -33,8 +36,8 @@ export function HomeHero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-7 text-neutral-100 drop-shadow-sm sm:text-lg sm:leading-8">
-            Thoughtfully crafted pieces for every room — and a real person on
-            video to walk you through assembly. No risks, no guesswork.
+            Thoughtfully crafted pieces for every room — and <span style={{ color: "rgba(255, 210, 48)" }}> a real person on
+            video to walk you through assembly.</span> No risks, no guesswork.
           </p>
 
           <div className="mt-10">

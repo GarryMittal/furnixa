@@ -44,7 +44,7 @@ const Navbar = () => {
         {/* Navigation */}
         <nav className="flex items-center gap-8">
           <Link
-            to="/"
+            to="/shop"
             className="flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-neutral-700 transition hover:text-black"
           >
             <ShoppingBagIcon size={18} />

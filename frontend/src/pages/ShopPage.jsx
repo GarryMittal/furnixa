@@ -1,5 +1,6 @@
 import { CatalogProductCard } from "../components/CatalogProductCard";
-import { PageError } from "../components/PageError";
+import { SentryErrorFallback } from "../components/SentryErrorFallback";
+// import { PageError } from "../components/PageError";
 import { useHomeCatalog } from "../hooks/useHomeCatalog";
 
 function ShopPage() {
@@ -14,7 +15,7 @@ function ShopPage() {
   } = useHomeCatalog();
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12 sm:px-10 lg:px-16">
+    <div className="mx-auto max-w-7xl px-6 py-12 sm:px-10 lg:px-16 bg-[#FDFBF7]">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <h1 className="font-mono text-2xl font-bold uppercase tracking-tight text-base-content">
           {categoryFilter || "All Products"}
@@ -23,7 +24,11 @@ function ShopPage() {
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            className={`btn btn-sm ${!categoryFilter ? "btn-primary" : "btn-ghost border border-base-300"}`}
+            className={`cursor-pointer rounded-xl px-4 py-2 text-xs font-medium transition-all shadow-sm ${
+              !categoryFilter
+                ? "bg-neutral-900 text-white shadow-md hover:bg-neutral-800"
+                : "bg-white text-neutral-600 border border-neutral-200/80 hover:bg-neutral-100/60 hover:text-neutral-900"
+            }`}
             onClick={() => setCategory("")}
           >
             All
@@ -31,13 +36,21 @@ function ShopPage() {
 
           {categoryChipsLoading
             ? [1, 2, 3, 4].map((i) => (
-                <div key={i} className="skeleton h-8 w-20 rounded-lg" aria-hidden />
+                <div
+                  key={i}
+                  className="skeleton h-8 w-20 rounded-lg"
+                  aria-hidden
+                />
               ))
             : categories.map((c) => (
                 <button
                   key={c}
                   type="button"
-                  className={`btn btn-sm ${categoryFilter === c ? "btn-primary" : "btn-ghost border border-base-300"}`}
+                  className={`cursor-pointer rounded-xl px-4 py-2 text-xs font-medium transition-all shadow-sm ${
+                    categoryFilter === c
+                      ? "bg-neutral-900 text-white shadow-md hover:bg-neutral-800"
+                      : "bg-white text-neutral-600 border border-neutral-200/80 hover:bg-neutral-100/60 hover:text-neutral-900"
+                  }`}
                   onClick={() => setCategory(c)}
                 >
                   {c}
@@ -55,7 +68,7 @@ function ShopPage() {
           ))}
         </ul>
       ) : error ? (
-        <PageError message="We couldn't load products. Please try again in a moment." />
+        <SentryErrorFallback />
       ) : products.length === 0 ? (
         <div className="rounded-box border border-base-300 bg-base-100 py-16 text-center text-base-content/60">
           No products in this category yet.
