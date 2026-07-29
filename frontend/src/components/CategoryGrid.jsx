@@ -4,7 +4,22 @@ import { Link } from "react-router";
 // "Living Room" -> "/livingroom.jpg", "Bedroom" -> "/bedroom.jpg", etc.
 // No separator, matching your current filenames exactly.
 function categoryImage(name) {
-  const slug = name.toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+  const normalized = name.toLowerCase().trim();
+
+  // Map database category names to actual public image filenames if they differ
+  const imageMap = {
+    study: "studyroom.jpg",
+    "study room": "studyroom.jpg",
+    // Add any other custom mappings here if needed, e.g.:
+    // "bathroom": "bathroom.jpg",
+  };
+
+  if (imageMap[normalized]) {
+    return `/${imageMap[normalized]}`;
+  }
+
+  // Fallback to automatic slug generation for other categories
+  const slug = normalized.replace(/[^a-z0-9]/g, "");
   return `/${slug}.jpg`;
 }
 
@@ -26,7 +41,10 @@ export function CategoryGrid({ categories = [], loading = false }) {
   if (!loading && items.length === 0) return null;
 
   return (
-    <section aria-labelledby="shop-by-category" className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+    <section
+      aria-labelledby="shop-by-category"
+      className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16"
+    >
       <h2
         id="shop-by-category"
         className="mb-6 font-mono text-2xl font-bold uppercase tracking-tight text-base-content"
@@ -37,7 +55,11 @@ export function CategoryGrid({ categories = [], loading = false }) {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {loading
           ? [1, 2, 3, 4].map((i) => (
-              <div key={i} className="skeleton aspect-[4/5] w-full rounded-2xl" aria-hidden />
+              <div
+                key={i}
+                className="skeleton aspect-[4/5] w-full rounded-2xl"
+                aria-hidden
+              />
             ))
           : items.map((category) => (
               <Link
