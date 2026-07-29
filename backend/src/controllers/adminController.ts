@@ -6,7 +6,7 @@ import ImageKit from "@imagekit/nodejs";
 import { getEnv } from "../lib/env.js";
 import { db } from "../db/index.js";
 import { orderItems, products, productImages } from "../db/schema.js";
-import { count, desc, eq } from "drizzle-orm";
+import { count,eq } from "drizzle-orm";
 import { z } from "zod";
 import { deleteImageKitAsset } from "../lib/imagekit.js";
 
