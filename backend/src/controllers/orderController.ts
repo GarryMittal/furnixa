@@ -4,8 +4,18 @@ import { getLocalUser } from "../routes/users.js";
 import { isStaff } from "../lib/roles.js";
 import { db } from "../db/index.js";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
-import { orderItems, orders, productImages, products, users } from "../db/schema.js";
-import { getStreamChatServer, streamChatDisplayName, streamUserId } from "../lib/stream.js";
+import {
+  orderItems,
+  orders,
+  productImages,
+  products,
+  users,
+} from "../db/schema.js";
+import {
+  getStreamChatServer,
+  streamChatDisplayName,
+  streamUserId,
+} from "../lib/stream.js";
 import { getEnv } from "../lib/env.js";
 
 const env = getEnv();
@@ -133,9 +143,27 @@ export async function getOrder(
       },
     });
 
+    const formattedItems = items.map((item) => {
+      const primaryImage =
+        item.product.images.find((img) => img.isPrimary) ??
+        item.product.images[0] ??
+        null;
+
+      return {
+        ...item,
+
+        product: {
+          ...item.product,
+
+          
+          imageUrl: primaryImage?.imageUrl ?? null,
+        },
+      };
+    });
+
     res.json({
       order,
-      items,
+      items: formattedItems,
     });
   } catch (error) {
     next(error);
@@ -194,30 +222,34 @@ export async function createStreamChannel(
         localUser.role,
         localUser.displayName,
         localUser.email,
-        
       ),
-      
     });
 
     const channelId = `order-${order.id}`;
-    const channel = server.channel("messaging",channelId,{
-        name:`Support - order ${order.id.slice(0,8)}`,
-        created_by_id: streamChatUserId,
+    const channel = server.channel("messaging", channelId, {
+      name: `Support - order ${order.id.slice(0, 8)}`,
+      created_by_id: streamChatUserId,
     });
 
     await channel.create();
 
     await channel.addMembers([streamChatUserId]);
 
-    res.json({channelType:"messaging",channelId,streamUserId:streamChatUserId});
-
+    res.json({
+      channelType: "messaging",
+      channelId,
+      streamUserId: streamChatUserId,
+    });
   } catch (error) {
     next(error);
   }
 }
 
-
-export async function createVideoInvite(req: Request, res: Response, next: NextFunction) {
+export async function createVideoInvite(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { userId, isAuthenticated } = getAuth(req);
     if (!isAuthenticated || !userId) {
@@ -234,7 +266,9 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
     }
 
     if (!isStaff(localUser.role)) {
-      res.status(403).json({ error: "Only support or admin can send a video invite" });
+      res
+        .status(403)
+        .json({ error: "Only support or admin can send a video invite" });
       return;
     }
 
@@ -249,8 +283,12 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
       return;
     }
 
-    const [owner] = await db.select().from(users).where(eq(users.id, order.userId)).limit(1);
-    
+    const [owner] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, order.userId))
+      .limit(1);
+
     const customerSid = streamUserId(owner.clerkUserId);
     await server.upsertUser({
       id: customerSid,
@@ -260,7 +298,11 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
     const staffStreamUserId = streamUserId(userId);
     await server.upsertUser({
       id: staffStreamUserId,
-      name: streamChatDisplayName(localUser.role, localUser.displayName, localUser.email),
+      name: streamChatDisplayName(
+        localUser.role,
+        localUser.displayName,
+        localUser.email,
+      ),
     });
 
     const channelId = `order-${order.id}`;

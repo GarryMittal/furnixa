@@ -150,6 +150,7 @@ function ProductDetailPage() {
   }, [product]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveIndex(0);
   }, [product?.id]);
 
