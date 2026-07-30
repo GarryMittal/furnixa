@@ -102,7 +102,7 @@ export async function createCheckout(
       })
       .returning();
 
-    const successUrl = `${env.FRONTEND_URL}/checkout/return?checkout_id={CHECKOUT_ID}`;
+    const successUrl = `${env.FRONTEND_URL}/return?checkout_id={CHECKOUT_ID}`;
     const returnUrl = `${env.FRONTEND_URL}/cart`;
 
     const checkout = await polarCreateCheckout(env, {
