@@ -1,4 +1,5 @@
 import { ArrowRight, Armchair } from "lucide-react";
+import { Link } from "react-router";
 
 export function HomeHero() {
   return (
@@ -7,8 +8,8 @@ export function HomeHero() {
         <img
           src="/herobg.jpg"
           alt=""
-          loading="eager" 
-          fetchPriority="high" 
+          loading="eager"
+          fetchPriority="high"
           decoding="async"
           aria-hidden="true"
           className="h-full w-full scale-105 object-cover blur-[2px]"
@@ -36,18 +37,23 @@ export function HomeHero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-7 text-neutral-100 drop-shadow-sm sm:text-lg sm:leading-8">
-            Thoughtfully crafted pieces for every room — and <span style={{ color: "rgba(255, 210, 48)" }}> a real person on
-            video to walk you through assembly.</span> No risks, no guesswork.
+            Thoughtfully crafted pieces for every room — and{" "}
+            <span style={{ color: "rgba(255, 210, 48)" }}>
+              {" "}
+              a real person on video to walk you through assembly.
+            </span>{" "}
+            No risks, no guesswork.
           </p>
 
           <div className="mt-10">
-            <a
-              href="#catalog"
+            <Link
+              to="/shop"
               className="inline-flex items-center justify-center rounded-xl bg-white px-7 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               Explore Collection
               <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
+            </Link>
+            
           </div>
         </div>
       </div>

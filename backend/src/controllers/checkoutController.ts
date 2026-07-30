@@ -37,6 +37,7 @@ export async function createCheckout(
       return;
     }
 
+    
     const parsed = cartSchema.safeParse(req.body);
 
     if (!parsed.success) {
@@ -129,6 +130,9 @@ export async function createCheckout(
 
     res.json({ checkoutUrl: checkout.url });
   } catch (error) {
+    console.error("CHECKOUT ERROR:");
+    
+
     next(error);
   }
 }

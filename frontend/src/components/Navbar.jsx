@@ -94,7 +94,7 @@ const Navbar = () => {
             <SignInButton mode="modal">
               <button
                 type="button"
-                className="rounded-full border border-black px-5 py-2 text-sm font-medium transition-all duration-300 hover:bg-black hover:text-white"
+                className="cursor-pointer rounded-full border border-black px-5 py-2 text-sm font-medium transition-all duration-300 hover:bg-black hover:text-white"
               >
                 <span className="flex items-center gap-2">
                   <LogInIcon size={16} />
