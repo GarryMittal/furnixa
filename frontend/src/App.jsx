@@ -29,7 +29,7 @@ function App() {
             }
           />
 
-          <Route path = "/checkout/return" element = {<CheckoutReturnPage />} />
+          <Route path = "/return" element = {<CheckoutReturnPage />} />
           
         </Routes>
       </Layout>
