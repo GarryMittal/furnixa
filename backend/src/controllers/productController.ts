@@ -62,22 +62,55 @@ export async function getCategories(
   }
 }
 
+// export async function getProductBySlug(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction,
+// ) {
+//   try {
+//     const [row] = await db
+//       .select()
+//       .from(products)
+//       .where(eq(products.slug, req.params.slug as string))
+//       .limit(1);
+
+//     if (!row || !row.active)
+//       return res.status(404).json({ error: "Not found" });
+
+//     res.json({ product: row });
+//   } catch (e) {
+//     next(e);
+//   }
+// }
+
 export async function getProductBySlug(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const [row] = await db
-      .select()
-      .from(products)
-      .where(eq(products.slug, req.params.slug as string))
-      .limit(1);
+    const row = await db.query.products.findFirst({
+      where: (products, { eq }) =>
+        eq(products.slug, req.params.slug as string),
 
-    if (!row || !row.active)
+      with: {
+        images: true,
+      },
+    });
+
+    if (!row || !row.active) {
       return res.status(404).json({ error: "Not found" });
+    }
 
-    res.json({ product: row });
+    const primaryImage =
+      row.images.find((img) => img.isPrimary) ?? row.images[0];
+
+    res.json({
+      product: {
+        ...row,
+        imageUrl: primaryImage?.imageUrl ?? null,
+      },
+    });
   } catch (e) {
     next(e);
   }
