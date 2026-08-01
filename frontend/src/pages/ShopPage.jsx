@@ -15,7 +15,7 @@ function ShopPage() {
   } = useHomeCatalog();
 
   return (
-    <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen bg-[#f2f2f2] py-12 px-6 sm:px-10 lg:px-16">
+    <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen min-h-screen bg-[#EFE9E3] py-12 px-6 sm:px-10 lg:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <h1 className="font-mono text-2xl font-bold uppercase tracking-tight text-base-content">

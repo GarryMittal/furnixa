@@ -6,7 +6,7 @@ import ImageKit from "@imagekit/nodejs";
 import { getEnv } from "../lib/env.js";
 import { db } from "../db/index.js";
 import { orderItems, products, productImages } from "../db/schema.js";
-import { count,eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 import { deleteImageKitAsset } from "../lib/imagekit.js";
 
@@ -24,7 +24,7 @@ const productCreate = z.object({
   priceCents: z.number().int().positive(),
   currency: z.string().min(1).default("usd"),
   active: z.boolean().default(true),
- 
+
   images: z.array(imageSchema).min(1),
 });
 
@@ -36,7 +36,6 @@ const productPatch = z.object({
   priceCents: z.number().int().positive().optional(),
   currency: z.string().min(1).optional(),
   active: z.boolean().optional(),
- 
 });
 
 function buildProductUpdateSet(body: z.infer<typeof productPatch>) {
@@ -157,7 +156,7 @@ export async function createAdminProduct(
           description: parsed.data.description,
           priceCents: parsed.data.priceCents,
           currency: parsed.data.currency,
-   
+
           active: parsed.data.active,
         })
         .returning();
@@ -294,9 +293,17 @@ export async function deleteAdminProduct(
       .from(productImages)
       .where(eq(productImages.productId, id));
 
-    for (const image of images) {
-      await deleteImageKitAsset(env, image.imageKitFileId);
-    }
+    // for (const image of images) {
+    //   await deleteImageKitAsset(env, image.imageKitFileId);
+    // }
+
+    await Promise.all(
+      
+
+      images.map(async (img) => await deleteImageKitAsset(env, img.imageKitFileId)),
+      
+    );
+
 
     await db.delete(products).where(eq(products.id, id));
 
