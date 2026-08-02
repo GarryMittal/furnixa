@@ -2,14 +2,15 @@
 
 # Furnixa
 
-### Full-stack furniture marketplace
+### Furniture marketplace with live chat & video-call assembly support
+
+Buy a piece of furniture, then video-call a specialist the moment it arrives to help you put it together — instead of guessing from a paper manual.
 
 React, Node.js, TypeScript, PostgreSQL — deployed on AWS ECS (Fargate) behind an Application Load Balancer.
 
 **Live:** https://www.furnixa.org
 
 </div>
-
 ---
 
 ## Screenshots
